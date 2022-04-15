@@ -6,6 +6,16 @@ import PlanetsContext from './PlanetsContext';
 function PlanetsProvider(props) {
   const [data, setData] = useState([]);
 
+  const [dataFiltered, setDataFiltered] = useState([]);
+
+  const [columna, setColumna] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+
   const [clicked, setClicked] = useState(false);
 
   const [filter, setFilter] = useState({
@@ -15,23 +25,42 @@ function PlanetsProvider(props) {
   });
 
   const [numericFilter, setNumericFilter] = useState({
-    filterByNumericValues:
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: 0,
-      },
+    filterByNumericValues: [],
   });
 
   const [substitute, setSubstitute] = useState({
-    column: 'population',
+    column: columna[0],
     comparison: 'maior que',
     value: 0,
   });
 
+  const filteredData = () => {
+    const { column, comparison, value } = substitute;
+    const comp = (col) => {
+      if (comparison === 'maior que') {
+        return col[column] > Number(value);
+      }
+      if (comparison === 'menor que') {
+        return col[column] < Number(value);
+      }
+      if (comparison === 'igual a') {
+        return col[column] <= Number(value);
+      }
+    };
+    setDataFiltered(dataFiltered.filter((obj) => comp(obj)));
+  };
+
   const handleClick = () => {
-    setNumericFilter({ filterByNumericValues: substitute });
+    setNumericFilter((prev) => ({ filterByNumericValues:
+       [...prev.filterByNumericValues, substitute] }));
     setClicked(true);
+    setColumna((prev) => prev.filter((obj) => obj !== substitute.column));
+    filteredData();
+    setSubstitute({
+      column: columna[0],
+      comparison: 'maior que',
+      value: 0,
+    });
   };
 
   const handleNumeric = ({ target: { value, id } }) => {
@@ -48,7 +77,7 @@ function PlanetsProvider(props) {
   const fetchAPI = async () => {
     const getInfos = await planetsAPI();
     setData(getInfos.results);
-    // console.log(getInfos.results);
+    setDataFiltered(getInfos.results);
   };
 
   useEffect(() => {
@@ -63,6 +92,10 @@ function PlanetsProvider(props) {
     clicked,
     filterByName,
     filterByNumericValues,
+    numericFilter,
+    substitute,
+    columna,
+    dataFiltered,
     handleFilter,
     handleNumeric,
     handleClick,

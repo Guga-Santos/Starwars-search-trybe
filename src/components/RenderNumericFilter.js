@@ -6,10 +6,10 @@ function RenderNumericFilter(data, column, comparison, value) {
       return col[column] > Number(value);
     }
     if (comparison === 'menor que') {
-      return col[column] < Number(value);
+      return col[column] <Number(value);
     }
     if (comparison === 'igual a') {
-      return col[column] == Number(value);
+      return col[column] === Number(value);
     }
   };
 

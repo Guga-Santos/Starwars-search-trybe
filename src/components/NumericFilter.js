@@ -3,7 +3,8 @@ import PlanetsContext from '../context/PlanetsContext';
 
 function NumericFilter() {
   const context = useContext(PlanetsContext);
-  const { handleNumeric, handleClick } = context;
+  const { handleNumeric, handleClick, substitute, columna } = context;
+
   return (
     <div className="numeric-filter-container">
       <label htmlFor="column">
@@ -13,11 +14,9 @@ function NumericFilter() {
           data-testid="column-filter"
           onChange={ (e) => handleNumeric(e) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {columna.map((opt) => (
+            <option key={ opt } value={ opt }>{opt}</option>
+          ))}
         </select>
       </label>
       <label htmlFor="comparison">
@@ -37,7 +36,7 @@ function NumericFilter() {
         type="number"
         data-testid="value-filter"
         onChange={ (e) => handleNumeric(e) }
-        value="0"
+        value={ substitute.value }
       />
       <button
         type="button"

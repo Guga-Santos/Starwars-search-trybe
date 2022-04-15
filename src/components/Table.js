@@ -4,11 +4,11 @@ import RenderNumericFilter from './RenderNumericFilter';
 
 function Table() {
   const context = useContext(PlanetsContext);
-  const { data, clicked, filterByName, filterByNumericValues } = context;
-  const { column, comparison, value } = filterByNumericValues;
+  const {clicked, filterByName, dataFiltered, substitute } = context;
+  const { column, comparison, value } = substitute;
 
-  const dataSearch = filterByName.name.length < 1 ? data
-    : data.filter((obj) => obj.name
+  const dataSearch = filterByName.name.length < 1 ? dataFiltered
+    : dataFiltered.filter((obj) => obj.name
       .toLowerCase().includes(filterByName.name));
 
   return (
@@ -32,7 +32,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {clicked ? RenderNumericFilter(data, column, comparison, value) : dataSearch
+          {clicked ? RenderNumericFilter(dataFiltered, column, comparison, value) : dataSearch
             .map((obj) => (
               <tr key={ obj.name }>
                 <td>{obj.name}</td>
