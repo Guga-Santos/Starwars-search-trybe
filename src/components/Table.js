@@ -3,7 +3,11 @@ import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
   const context = useContext(PlanetsContext);
-  const { data } = context;
+  const { data, filterByName } = context;
+
+  const dataSearch = filterByName.name.length < 1 ? data
+    : data.filter((obj) => obj.name
+      .toLowerCase().includes(filterByName.name));
   return (
     <div className="table-container">
       <table>
@@ -25,7 +29,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {data.map((obj) => (
+          {dataSearch.map((obj) => (
             <tr key={ obj.name }>
               <td>{obj.name}</td>
               <td>{obj.rotation_period}</td>
