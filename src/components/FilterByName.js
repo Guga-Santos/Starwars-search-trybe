@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
-function FilterInput() {
+function FilterByName() {
   const context = useContext(PlanetsContext);
   const { handleFilter } = context;
   return (
@@ -16,4 +16,4 @@ function FilterInput() {
   );
 }
 
-export default FilterInput;
+export default FilterByName;

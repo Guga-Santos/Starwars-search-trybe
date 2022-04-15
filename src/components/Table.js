@@ -1,13 +1,16 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
+import RenderNumericFilter from './RenderNumericFilter';
 
 function Table() {
   const context = useContext(PlanetsContext);
-  const { data, filterByName } = context;
+  const { data, clicked, filterByName, filterByNumericValues } = context;
+  const { column, comparison, value } = filterByNumericValues;
 
   const dataSearch = filterByName.name.length < 1 ? data
     : data.filter((obj) => obj.name
       .toLowerCase().includes(filterByName.name));
+
   return (
     <div className="table-container">
       <table>
@@ -29,23 +32,24 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {dataSearch.map((obj) => (
-            <tr key={ obj.name }>
-              <td>{obj.name}</td>
-              <td>{obj.rotation_period}</td>
-              <td>{obj.orbital_period}</td>
-              <td>{obj.diameter}</td>
-              <td>{obj.climate}</td>
-              <td>{obj.gravity}</td>
-              <td>{obj.terrain}</td>
-              <td>{obj.surface_water}</td>
-              <td>{obj.population}</td>
-              <td>{obj.films.map((film) => film)}</td>
-              <td>{obj.created}</td>
-              <td>{obj.edited}</td>
-              <td>{obj.url}</td>
-            </tr>
-          ))}
+          {clicked ? RenderNumericFilter(data, column, comparison, value) : dataSearch
+            .map((obj) => (
+              <tr key={ obj.name }>
+                <td>{obj.name}</td>
+                <td>{obj.rotation_period}</td>
+                <td>{obj.orbital_period}</td>
+                <td>{obj.diameter}</td>
+                <td>{obj.climate}</td>
+                <td>{obj.gravity}</td>
+                <td>{obj.terrain}</td>
+                <td>{obj.surface_water}</td>
+                <td>{obj.population}</td>
+                <td>{obj.films.map((film) => film)}</td>
+                <td>{obj.created}</td>
+                <td>{obj.edited}</td>
+                <td>{obj.url}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

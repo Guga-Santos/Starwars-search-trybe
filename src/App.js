@@ -1,14 +1,15 @@
 import React from 'react';
 import './App.css';
-import FilterInput from './components/FilterInput';
+import FilterByName from './components/FilterByName';
+import NumericFilter from './components/NumericFilter';
 import Table from './components/Table';
 import PlanetsProvider from './context/PlanetsProvider';
 
 function App() {
   return (
     <PlanetsProvider>
-      <span>Hello, App!</span>
-      <FilterInput />
+      <FilterByName />
+      <NumericFilter />
       <Table />
     </PlanetsProvider>
   );
