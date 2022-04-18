@@ -8,13 +8,14 @@ function PlanetsProvider(props) {
 
   const [dataFiltered, setDataFiltered] = useState([]);
 
-  const [columna, setColumna] = useState([
+  const INITIAL_COLUMN = [
     'population',
     'orbital_period',
     'diameter',
     'rotation_period',
-    'surface_water',
-  ]);
+    'surface_water'];
+
+  const [columna, setColumna] = useState([...INITIAL_COLUMN]);
 
   const [clicked, setClicked] = useState(false);
 
@@ -41,10 +42,10 @@ function PlanetsProvider(props) {
         return col[column] > Number(value);
       }
       if (comparison === 'menor que') {
-        return col[column] < Number(value);
+        return col[column] <= Number(value);
       }
       if (comparison === 'igual a') {
-        return col[column] <= Number(value);
+        return col[column] === value;
       }
     };
     setDataFiltered(dataFiltered.filter((obj) => comp(obj)));
@@ -78,6 +79,18 @@ function PlanetsProvider(props) {
     const getInfos = await planetsAPI();
     setData(getInfos.results);
     setDataFiltered(getInfos.results);
+    // console.log(getInfos.results)
+  };
+
+  const deleteFilter = ({ target: { id } }) => {
+    setNumericFilter((prev) => ({
+      filterByNumericValues: prev.filterByNumericValues
+        .filter((obj) => obj.column !== id),
+    }));
+    setColumna((prev) => ([
+      ...prev,
+      id,
+    ]));
   };
 
   useEffect(() => {
@@ -99,6 +112,7 @@ function PlanetsProvider(props) {
     handleFilter,
     handleNumeric,
     handleClick,
+    deleteFilter,
   };
 
   return (
