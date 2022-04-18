@@ -4,7 +4,7 @@ import RenderNumericFilter from './RenderNumericFilter';
 
 function Table() {
   const context = useContext(PlanetsContext);
-  const {clicked, filterByName, dataFiltered, substitute } = context;
+  const { clicked, filterByName, dataFiltered, substitute } = context;
   const { column, comparison, value } = substitute;
 
   const dataSearch = filterByName.name.length < 1 ? dataFiltered
@@ -32,24 +32,25 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {clicked ? RenderNumericFilter(dataFiltered, column, comparison, value) : dataSearch
-            .map((obj) => (
-              <tr key={ obj.name }>
-                <td>{obj.name}</td>
-                <td>{obj.rotation_period}</td>
-                <td>{obj.orbital_period}</td>
-                <td>{obj.diameter}</td>
-                <td>{obj.climate}</td>
-                <td>{obj.gravity}</td>
-                <td>{obj.terrain}</td>
-                <td>{obj.surface_water}</td>
-                <td>{obj.population}</td>
-                <td>{obj.films.map((film) => film)}</td>
-                <td>{obj.created}</td>
-                <td>{obj.edited}</td>
-                <td>{obj.url}</td>
-              </tr>
-            ))}
+          { clicked
+            ? RenderNumericFilter(dataFiltered, column, comparison, value) : dataSearch
+              .map((obj) => (
+                <tr key={ obj.name }>
+                  <td>{obj.name}</td>
+                  <td>{obj.rotation_period}</td>
+                  <td>{obj.orbital_period}</td>
+                  <td>{obj.diameter}</td>
+                  <td>{obj.climate}</td>
+                  <td>{obj.gravity}</td>
+                  <td>{obj.terrain}</td>
+                  <td>{obj.surface_water}</td>
+                  <td>{obj.population}</td>
+                  <td>{obj.films.map((film) => film)}</td>
+                  <td>{obj.created}</td>
+                  <td>{obj.edited}</td>
+                  <td>{obj.url}</td>
+                </tr>
+              ))}
         </tbody>
       </table>
     </div>
