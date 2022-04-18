@@ -33,7 +33,8 @@ function Table() {
         </thead>
         <tbody>
           { clicked
-            ? RenderNumericFilter(dataFiltered, column, comparison, value) : dataSearch
+            ? RenderNumericFilter(dataFiltered, column, comparison, value)
+            : dataSearch
               .map((obj) => (
                 <tr key={ obj.name }>
                   <td>{obj.name}</td>

@@ -54,9 +54,13 @@ function PlanetsProvider(props) {
   const handleClick = () => {
     setNumericFilter((prev) => ({ filterByNumericValues:
        [...prev.filterByNumericValues, substitute] }));
+
     setClicked(true);
+
     setColumna((prev) => prev.filter((obj) => obj !== substitute.column));
+
     filteredData();
+
     setSubstitute({
       column: columna[0],
       comparison: 'maior que',
@@ -75,13 +79,6 @@ function PlanetsProvider(props) {
     setFilter({ filterByName: { name: value.toLowerCase() } });
   };
 
-  const fetchAPI = async () => {
-    const getInfos = await planetsAPI();
-    setData(getInfos.results);
-    setDataFiltered(getInfos.results);
-    // console.log(getInfos.results)
-  };
-
   const deleteFilter = ({ target: { id } }) => {
     setNumericFilter((prev) => ({
       filterByNumericValues: prev.filterByNumericValues
@@ -94,8 +91,20 @@ function PlanetsProvider(props) {
   };
 
   useEffect(() => {
+    const fetchAPI = async () => {
+      const getInfos = await planetsAPI();
+      setData(getInfos.results);
+      setDataFiltered(getInfos.results);
+      // console.log(getInfos.results)
+    };
     fetchAPI();
   }, []);
+
+  const resetFilters = () => {
+    setDataFiltered(data);
+    setNumericFilter({ filterByNumericValues: [] });
+    setColumna([...INITIAL_COLUMN]);
+  };
 
   const { children } = props;
   const { filterByName } = filter;
@@ -113,6 +122,7 @@ function PlanetsProvider(props) {
     handleNumeric,
     handleClick,
     deleteFilter,
+    resetFilters,
   };
 
   return (
