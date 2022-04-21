@@ -35,20 +35,36 @@ function PlanetsProvider(props) {
     value: 0,
   });
 
-  const filteredData = () => {
-    const { column, comparison, value } = substitute;
-    const comp = (col) => {
+  // const filteredData = () => {
+  //   const { column, comparison, value } = substitute;
+  //   const comp = (col) => {
+  //     if (comparison === 'maior que') {
+  //       return col[column] > Number(value);
+  //     }
+  //     if (comparison === 'menor que') {
+  //       return col[column] <= Number(value);
+  //     }
+  //     if (comparison === 'igual a') {
+  //       return col[column] === value;
+  //     }
+  //   };
+  //   setDataFiltered(dataFiltered.filter((obj) => comp(obj)));
+  // };
+
+  const testeMaroto = () => {
+    const { filterByNumericValues } = numericFilter;
+
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
       if (comparison === 'maior que') {
-        return col[column] > Number(value);
+        setDataFiltered(data.filter((obj) => obj[column] > Number(value)));
       }
       if (comparison === 'menor que') {
-        return col[column] <= Number(value);
+        setDataFiltered(data.filter((obj) => obj[column] <= Number(value)));
       }
       if (comparison === 'igual a') {
-        return col[column] === value;
+        setDataFiltered(data.filter((obj) => obj[column] === value));
       }
-    };
-    setDataFiltered(dataFiltered.filter((obj) => comp(obj)));
+    });
   };
 
   const handleClick = () => {
@@ -59,7 +75,7 @@ function PlanetsProvider(props) {
 
     setColumna((prev) => prev.filter((obj) => obj !== substitute.column));
 
-    filteredData();
+    testeMaroto();
 
     setSubstitute({
       column: columna[0],
@@ -84,12 +100,19 @@ function PlanetsProvider(props) {
       filterByNumericValues: prev.filterByNumericValues
         .filter((obj) => obj.column !== id),
     }));
+
+    testeMaroto();
+
     setColumna((prev) => ([
       ...prev,
       id,
     ]));
   };
 
+  // useEffect(() => {
+  //   testeMaroto();
+  // }, [testeMaroto]);
+  
   useEffect(() => {
     const fetchAPI = async () => {
       const getInfos = await planetsAPI();
@@ -106,7 +129,6 @@ function PlanetsProvider(props) {
     setColumna([...INITIAL_COLUMN]);
   };
 
-  const { children } = props;
   const { filterByName } = filter;
   const { filterByNumericValues } = numericFilter;
   const context = {
